@@ -13,8 +13,8 @@ export class TypeOrmClientFactory {
         password: config.password,
         database: config.database,
         entities: [__dirname + '/../../../../**/**/infrastructure/persistence/typeorm/*{.js,.ts}'],
-        synchronize: true,
-        logging: true
+        synchronize: true, // dev
+        // logging: true // dev
       });
 
       return connection;
