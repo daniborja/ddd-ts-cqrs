@@ -10,10 +10,13 @@ export class CoursesCounterIncrementer {
   async run(courseId: CourseId) {
     const counter = (await this.repository.search()) || this.initializeCounter();
 
-    counter.increment(courseId);
+    // controlamos eventos repetidos
+    if (!counter.hasIncremented(courseId)) {
+      counter.increment(courseId);
 
-    await this.repository.save(counter);
-    await this.bus.publish(counter.pullDomainEvents());
+      await this.repository.save(counter);
+      await this.bus.publish(counter.pullDomainEvents());
+    }
   }
 
   private initializeCounter(): CoursesCounter {
